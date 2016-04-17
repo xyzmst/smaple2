@@ -273,7 +273,7 @@ public class CreateRoomActivity extends Activity implements OnClickListener {
 			
 			if (Util.isNetworkAvailable(getApplicationContext())) {
 				int relationId = getRelationId();
-				relationId = 200011;
+//				relationId = 200011;
 				if (relationId != 0) {
 					if ((mQavsdkControl != null) && (mQavsdkControl.getAVContext() != null) && (mQavsdkControl.getAVContext().getAudioCtrl() != null)) {
 						mQavsdkControl.getAVContext().getAudioCtrl().startTRAEService();

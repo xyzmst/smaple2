@@ -14,11 +14,13 @@ import com.tencent.av.sdk.AVAudioCtrl.Delegate;
 import com.tencent.av.sdk.AVError;
 import com.tencent.avsdk.QavsdkApplication;
 import com.tencent.avsdk.Util;
+import com.todoroo.aacenc.AACEncoder;
 
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class AVAudioControl {
     private Context mContext = null;
@@ -57,9 +59,9 @@ public class AVAudioControl {
         qavsdk.getAVContext().getAudioCtrl().setDelegate(mDelegate);
 
         setEnable(AudioDataSourceType.AUDIO_DATA_SOURCE_MIC, true);
-        setEnable(AudioDataSourceType.AUDIO_DATA_SOURCE_MIXTOPLAY, true);
+        setEnable(AudioDataSourceType.AUDIO_DATA_SOURCE_NETSTREM, true);
         registAudioDataCallback(AudioDataSourceType.AUDIO_DATA_SOURCE_MIC);
-        registAudioDataCallback(AudioDataSourceType.AUDIO_DATA_SOURCE_MIXTOPLAY);
+        registAudioDataCallback(AudioDataSourceType.AUDIO_DATA_SOURCE_NETSTREM);
 
     }
 
@@ -202,8 +204,57 @@ public class AVAudioControl {
     private AVAudioCtrl.RegistAudioDataCompleteCallback registAudioDataCompleteCallback = new AVAudioCtrl.RegistAudioDataCompleteCallback() {
         protected int onComplete(AudioFrame audioframe, int srcType) {
 
-            return origCallback(audioframe, srcType);
+//            return origCallback(audioframe, srcType);
+//            return newCallback(audioframe, srcType);
+            if (!isInit) {
+                String fullfilePath = Environment.getExternalStorageDirectory() + "/tencent/com/tencent/mobileqq/avsdk/" + System.currentTimeMillis() + ".aac";
+                encoder.init(64000, audioframe.channelNum, audioframe.sampleRate, 16, fullfilePath);
+                isInit = true;
+                mWriteAccThread.start();
+            }
+            newDoDataCallback(audioframe, srcType);
 
+            return AVError.AV_OK;
+        }
+    };
+
+    ConcurrentLinkedQueue<byte[]> mic_queue = new ConcurrentLinkedQueue();
+    ConcurrentLinkedQueue<byte[]> net_queue = new ConcurrentLinkedQueue();
+    byte[] mic_byte;
+    byte[] net_byte;
+
+    int length = 48000 * 16 * 2;
+    Thread mWriteAccThread = new Thread() {
+        @Override
+        public void run() {
+            while (true) {
+                Log.e("=========", "start");
+                if (mic_queue.size() > 0 && net_queue.size() > 0) {
+                    if (mic_byte == null || net_byte == null) {
+                        mic_byte = mic_queue.poll();
+                        net_byte = net_queue.poll();
+                    } else {
+                        if (mic_byte.length < length && net_byte.length < length) {
+                            mic_byte = byteMerger(mic_byte, mic_queue.poll());
+                            net_byte = byteMerger(net_byte, net_queue.poll());
+                        } else {
+                            byte[] mix = mixAudio(mic_byte, net_byte);
+                            encoder.encode(mix);
+                            mic_byte = null;
+                            net_byte = null;
+                        }
+                    }
+                } else {
+                    mic_queue.offer(new byte[3840]);
+                    net_queue.offer(new byte[3840]);
+                }
+
+                try {
+                    sleep(20);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
 
         }
     };
@@ -211,6 +262,74 @@ public class AVAudioControl {
 
     /**
      * 原始的录制 callback函数
+     *
+     * @param audioframe
+     * @param srcType
+     * @return
+     */
+    private void newDoDataCallback(AudioFrame audioframe, int srcType) {
+        if (audioframe == null)
+            return;
+
+        if (srcType == AudioDataSourceType.AUDIO_DATA_SOURCE_NETSTREM) {
+            net_queue.offer(audioframe.data);
+        } else if (srcType == AudioDataSourceType.AUDIO_DATA_SOURCE_MIC) {
+            mic_queue.offer(audioframe.data);
+        }
+    }
+
+
+    /**
+     * 原始的录制 callback函数
+     *
+     * @param audioframe
+     * @param srcType
+     * @return
+     */
+    private int newCallback(AudioFrame audioframe, int srcType) {
+        if (audioframe == null)
+            return AVError.AV_ERR_FAILED;
+
+        String fullfilePath = "";
+        if (srcType == AudioDataSourceType.AUDIO_DATA_SOURCE_NETSTREM) {
+
+            if (TextUtils.isEmpty(audioframe.identifier))
+                return AVError.AV_ERR_FAILED;
+            fullfilePath = audioNetStreamDataFileName.get(audioframe.identifier);
+            if (!audioDataEnable[srcType])
+                return AVError.AV_ERR_FAILED;
+            if (TextUtils.isEmpty(fullfilePath)) {
+                fullfilePath = getOutputAudioFilePath(srcType, audioframe);
+                return writeAudioFile(fullfilePath, srcType, audioframe);
+            } else {
+                if ((audioSamplerateDesc[srcType] != audioframe.sampleRate) || (audioChannelDesc[srcType] != audioframe.channelNum)) {
+                    fullfilePath = getOutputAudioFilePath(srcType, audioframe);
+                }
+                return writeAudioFile(fullfilePath, srcType, audioframe);
+            }
+        } else {
+            fullfilePath = audioDataFileName.get(Integer.valueOf(srcType));
+            if (!audioDataEnable[srcType])
+                return AVError.AV_ERR_FAILED;
+            if (TextUtils.isEmpty(fullfilePath)) {
+                fullfilePath = getOutputAudioFilePath(srcType, audioframe);
+
+//                return writeAudioFile(fullfilePath, srcType, audioframe);
+                return writeAacFile(fullfilePath, srcType, audioframe);
+            } else {
+                if ((audioSamplerateDesc[srcType] != audioframe.sampleRate) || (audioChannelDesc[srcType] != audioframe.channelNum)) {
+                    fullfilePath = getOutputAudioFilePath(srcType, audioframe);
+                }
+//                return writeAudioFile(fullfilePath, srcType, audioframe);
+                return writeAacFile(fullfilePath, srcType, audioframe);
+            }
+        }
+    }
+
+
+    /**
+     * 原始的录制 callback函数
+     *
      * @param audioframe
      * @param srcType
      * @return
@@ -336,6 +455,9 @@ public class AVAudioControl {
         return readRet;
     }
 
+    boolean isInit = false;
+
+    AACEncoder encoder = new AACEncoder();
 
     private String getOutputAudioFilePath(int srcType, AudioFrame audioframe) {
         SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
@@ -362,9 +484,19 @@ public class AVAudioControl {
                 break;
         }
 
-        fullfilePath += (audioframe.sampleRate + "_" + audioframe.channelNum + "_" + date + ".pcm");
+
+//        fullfilePath += (audioframe.sampleRate + "_" + audioframe.channelNum + "_" + date + ".pcm");
+        fullfilePath += (audioframe.sampleRate + "_" + audioframe.channelNum + "_" + date + ".aac");
         audioChannelDesc[srcType] = audioframe.channelNum;
         audioSamplerateDesc[srcType] = audioframe.sampleRate;
+
+
+        if (srcType == AudioDataSourceType.AUDIO_DATA_SOURCE_MIC) {
+            if (!isInit) {
+                encoder.init(64000, audioframe.channelNum, audioframe.sampleRate, 16, fullfilePath);
+                isInit = true;
+            }
+        }
 
 
         if (srcType == AudioDataSourceType.AUDIO_DATA_SOURCE_NETSTREM) {
@@ -374,6 +506,35 @@ public class AVAudioControl {
         }
 
         return fullfilePath;
+    }
+
+
+    private int writeAacFile(String filename, int srcType, AudioFrame audioframe) {
+        int ret = AVError.AV_OK;
+        if (srcType == AudioDataSourceType.AUDIO_DATA_SOURCE_MIC) {
+//            encoder.encode(audioframe.data);
+            if (mic_byte == null) {
+                mic_byte = audioframe.data;
+            } else {
+                if (mic_byte.length < length) {
+                    mic_byte = byteMerger(mic_byte, audioframe.data);
+                } else {
+                    encoder.encode(mic_byte);
+                    mic_byte = null;
+                }
+            }
+        }
+
+
+        if (ret == AVError.AV_OK) {
+            if (audioFrameDesc[srcType] != null) {
+                audioFrameDesc[srcType].bits = audioframe.bits;
+                audioFrameDesc[srcType].sampleRate = audioframe.sampleRate;
+                audioFrameDesc[srcType].channelNum = audioframe.channelNum;
+                audioFrameDesc[srcType].srcTye = audioframe.srcTye;
+            }
+        }
+        return ret;
     }
 
     private int writeAudioFile(String filename, int srcType, AudioFrame audioframe) {
@@ -410,4 +571,77 @@ public class AVAudioControl {
         }
         return ret;
     }
+
+
+    public static byte[] byteMerger(byte[] byte_1, byte[] byte_2) {
+        byte[] byte_3 = new byte[byte_1.length + byte_2.length];
+        System.arraycopy(byte_1, 0, byte_3, 0, byte_1.length);
+        System.arraycopy(byte_2, 0, byte_3, byte_1.length, byte_2.length);
+        return byte_3;
+    }
+
+
+    public void bytesToShorts(byte[] bytes, short[] pShorts) {
+        if (bytes == null || bytes.length < 2) {
+            return;
+        }
+        if (pShorts == null || pShorts.length < bytes.length / 2) {
+            pShorts = new short[bytes.length / 2];
+        }
+        for (int i = 0; i < bytes.length / 2; i++) {
+            pShorts[i] = getShort(bytes, i * 2);//swapBytes(outputByteArray[2*j + 1], outputByteArray[2*j ]);
+        }
+    }
+
+    public short getShort(byte[] b, int index) {
+        short l;
+        l = b[index + 0];
+        l &= 0xff;
+        l |= ((long) b[index + 1] << 8);
+        l &= 0xffff;
+//        l |= ((long) b[index + 2] << 16);
+//        l &= 0xffffff;
+//        l |= ((long) b[index + 3] << 24);
+        return l;
+    }
+
+    public short mixAudioByte(short[] samples, float weight) {
+        int mixed = (int) (samples[0] * (1 - weight) + samples[1] * weight);
+//        if(Math.abs(mixed)>Short.MAX_VALUE) {
+//            Log.e("mixed1:", mixed + "");
+//        }
+        return (short) mixed;
+    }
+
+    public static void shortsToBytes(short[] shorts, byte[] bytes) {
+        int i = 0;
+        for (short s : shorts) {
+            if (i * 2 + 1 <= bytes.length) {
+                bytes[i * 2] = (byte) (s & 0xFF);
+                bytes[i * 2 + 1] = (byte) ((s >> 8) & 0xFF);
+                i++;
+            } else {
+                break;
+            }
+        }
+    }
+
+    public byte[] mixAudio(byte[] sample1, byte[] sample2) {
+        short[] pShorts1 = new short[sample1.length / 2];
+        short[] pShorts2 = new short[sample1.length / 2];
+        byte[] result = new byte[sample1.length];
+        bytesToShorts(sample1, pShorts1);
+        bytesToShorts(sample2, pShorts2);
+        short[] p = new short[pShorts1.length];
+        for (int i = 0; i < pShorts1.length; i++) {
+            int value = (pShorts1[i] + pShorts2[i]);
+            p[i] = (short) value;
+        }
+
+        shortsToBytes(p, result);
+        return result;
+
+    }
+
+
 }
