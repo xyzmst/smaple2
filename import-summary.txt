@@ -1,0 +1,116 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .gradle/
+* .gradle/2.4/
+* .gradle/2.4/taskArtifacts/
+* .gradle/2.4/taskArtifacts/cache.properties
+* .gradle/2.4/taskArtifacts/cache.properties.lock
+* .gradle/2.4/taskArtifacts/fileHashes.bin
+* .gradle/2.4/taskArtifacts/fileSnapshots.bin
+* .gradle/2.4/taskArtifacts/outputFileStates.bin
+* .gradle/2.4/taskArtifacts/taskArtifacts.bin
+* .idea/
+* .idea/.name
+* .idea/compiler.xml
+* .idea/copyright/
+* .idea/copyright/profiles_settings.xml
+* .idea/encodings.xml
+* .idea/gradle.xml
+* .idea/libraries/
+* .idea/libraries/bugly_1_2_8_imsdk_release.xml
+* .idea/libraries/eup_1_9_2__allproguad_rqdp.xml
+* .idea/libraries/httpmime_4_1_1.xml
+* .idea/libraries/imsdk.xml
+* .idea/libraries/mobilepb.xml
+* .idea/libraries/qalsdk.xml
+* .idea/libraries/qavsdk.xml
+* .idea/libraries/support_annotations_22_1_1.xml
+* .idea/libraries/support_v4_22_1_1.xml
+* .idea/libraries/tls_sdk.xml
+* .idea/libraries/universal_image_loader_1_9_4.xml
+* .idea/libraries/wup_1_0_0_SNAPSHOT.xml
+* .idea/misc.xml
+* .idea/modules.xml
+* .idea/runConfigurations.xml
+* .idea/workspace.xml
+* build.xml
+* doc/
+* doc/多人Demo sdk流程图.png
+* doc/音视频SDK API说明文档.rar
+* ic_launcher-web.png
+* proguard-project.txt
+* 多人Demo使用说明.doc
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:19.1.0
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => app/src/main/AndroidManifest.xml
+* assets/ => app/src/main/assets
+* libs/armeabi/libBugly.so => app/src/main/jniLibs/armeabi/libBugly.so
+* libs/armeabi/libNativeRQD.so => app/src/main/jniLibs/armeabi/libNativeRQD.so
+* libs/armeabi/libTcVpxDec.so => app/src/main/jniLibs/armeabi/libTcVpxDec.so
+* libs/armeabi/libTcVpxEnc.so => app/src/main/jniLibs/armeabi/libTcVpxEnc.so
+* libs/armeabi/lib_imcore_jni_gyp.so => app/src/main/jniLibs/armeabi/lib_imcore_jni_gyp.so
+* libs/armeabi/libcodecwrapperV2.so => app/src/main/jniLibs/armeabi/libcodecwrapperV2.so
+* libs/armeabi/libhwcodec.so => app/src/main/jniLibs/armeabi/libhwcodec.so
+* libs/armeabi/libmsfbootV2.so => app/src/main/jniLibs/armeabi/libmsfbootV2.so
+* libs/armeabi/libqalcodecwrapper.so => app/src/main/jniLibs/armeabi/libqalcodecwrapper.so
+* libs/armeabi/libqalmsfboot.so => app/src/main/jniLibs/armeabi/libqalmsfboot.so
+* libs/armeabi/libqav_graphics.so => app/src/main/jniLibs/armeabi/libqav_graphics.so
+* libs/armeabi/libqavsdk.so => app/src/main/jniLibs/armeabi/libqavsdk.so
+* libs/armeabi/libstlport_shared.so => app/src/main/jniLibs/armeabi/libstlport_shared.so
+* libs/armeabi/libtraeimp-armeabi-v7a.so => app/src/main/jniLibs/armeabi/libtraeimp-armeabi-v7a.so
+* libs/armeabi/libwtcrypto.so => app/src/main/jniLibs/armeabi/libwtcrypto.so
+* libs/armeabi/libxplatform.so => app/src/main/jniLibs/armeabi/libxplatform.so
+* libs/beacon_android_v1.9.9.jar => app/libs/beacon_android_v1.9.9.jar
+* libs/bugly_1.2.8_imsdk_release.jar => app/libs/bugly_1.2.8_imsdk_release.jar
+* libs/eup_1.9.2__allproguad_rqdp.jar => app/libs/eup_1.9.2__allproguad_rqdp.jar
+* libs/imsdk.jar => app/libs/imsdk.jar
+* libs/libamm_sdk.jar => app/libs/libamm_sdk.jar
+* libs/mobilepb.jar => app/libs/mobilepb.jar
+* libs/mta-sdk.jar => app/libs/mta-sdk.jar
+* libs/open_sdk.jar => app/libs/open_sdk.jar
+* libs/qalsdk.jar => app/libs/qalsdk.jar
+* libs/qavsdk.jar => app/libs/qavsdk.jar
+* libs/tls_sdk.jar => app/libs/tls_sdk.jar
+* libs/tlsdemo.jar => app/libs/tlsdemo.jar
+* libs/wup-1.0.0-SNAPSHOT.jar => app/libs/wup-1.0.0-SNAPSHOT.jar
+* lint.xml => app/lint.xml
+* res/ => app/src/main/res/
+* src/ => app/src/main/java/
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)
