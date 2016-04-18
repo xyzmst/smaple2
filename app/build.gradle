@@ -1,23 +1,49 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.model.application'
 
-android {
-    compileSdkVersion 19
-    buildToolsVersion "23.0.2"
+model {
+    android {
+        compileSdkVersion = 19
+        buildToolsVersion = "23.0.2"
 
-    defaultConfig {
-        applicationId "com.tencent.avsdk"
-        minSdkVersion 8
-        targetSdkVersion 18
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        defaultConfig.with {
+            applicationId = "com.tencent.avsdk"
+            minSdkVersion.apiLevel = 4
+            targetSdkVersion.apiLevel = 18
         }
     }
-}
 
+    /*
+     * native build settings
+     */
+    android.ndk {
+        moduleName = "aac-encoder"
+        CFlags.addAll([
+                "-I${file("src/main/jni")}".toString(),
+                "-I${file("src/main/jni/basic_op")}".toString(),
+                "-I${file("src/main/jni/inc")}".toString(),
+                "-I${file("src/main/jni/src")}".toString(),
+                "-I${file("src/main/jni/src/asm")}".toString(),
+                "-I${file("src/main/jni/src/asm/ARMV5E")}".toString(),
+                "-I${file("src/main/jni/src/asm/ARMV7")}".toString()
+        ])
+        ldLibs.addAll(["android", "log"])
+    }
+    android.buildTypes {
+        release {
+            minifyEnabled = false
+            proguardFiles.add(file('proguard-rules.txt'))
+        }
+    }
+    android.productFlavors {
+        // for detailed abiFilter descriptions, refer to "Supported ABIs" @
+        // https://developer.android.com/ndk/guides/abis.html#sa
+        create("arm") {
+            ndk.abiFilters.add("armeabi")
+        }
+    }
+
+
+}
 dependencies {
     compile 'com.android.support:support-v4:19.1.0'
     compile files('libs/beacon_android_v1.9.9.jar')

@@ -2,3 +2,10 @@
 /build
 /app/build
 /.idea
+.gradle
+/local.properties
+.DS_Store
+*.iml
+.gitignore
+.idea
+*.class

@@ -1,2 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
+
+    <item
+        jar="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/libs/tls_sdk.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="a6fdd5189b8a788ff05e1a9216e2700d891fae1a">
+        <dex dex="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/build/intermediates/pre-dexed/arm/debug/tls_sdk_e6cf1872eefbde9168f13b0451fb2452ee398500.jar" />
+    </item>
+    <item
+        jar="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/libs/eup_1.9.2__allproguad_rqdp.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="dc2a82e6063ab032c96bacc96b0bd8dc929da9ab">
+        <dex dex="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/build/intermediates/pre-dexed/arm/debug/eup_1.9.2__allproguad_rqdp_e134b64ed075a5480422c661094276fd08644d36.jar" />
+    </item>
+    <item
+        jar="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/libs/mobilepb.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="a5e62566e5023a4497edcb883324e82771c8c9fb">
+        <dex dex="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/build/intermediates/pre-dexed/arm/debug/mobilepb_fd3dfc839da44f89cb544075b5888167cd9daf8b.jar" />
+    </item>
+    <item
+        jar="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/libs/beacon_android_v1.9.9.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="bfb018e8073e59236f150fbf261e184996ee7abc">
+        <dex dex="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/build/intermediates/pre-dexed/arm/debug/beacon_android_v1.9.9_f7385b588a22e738000735dea8d703d0482a4d3a.jar" />
+    </item>
+    <item
+        jar="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/libs/mta-sdk.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="c184c69f43b1fe46390f7123717c65bd844bccb6">
+        <dex dex="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/build/intermediates/pre-dexed/arm/debug/mta-sdk_1f88f53879981f22e28b2f015de9430affdffc1b.jar" />
+    </item>
+    <item
+        jar="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/libs/qavsdk.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="471b45aa86ae74028391f58e55c59025d429ade2">
+        <dex dex="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/build/intermediates/pre-dexed/arm/debug/qavsdk_49f1a5f1b69ce4f3b09bc23242b94a9dd5a64a55.jar" />
+    </item>
+    <item
+        jar="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/libs/tlsdemo.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="610f81485e134ccf25c2ffc7e30b778240f2b73c">
+        <dex dex="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/build/intermediates/pre-dexed/arm/debug/tlsdemo_ad279f1c37d34f4d7b88fcf2ab2801ecbab42f6f.jar" />
+    </item>
+    <item
+        jar="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/libs/imsdk.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="1e61c7e767cd4cf3ffbc05b76337b761b35b4ac4">
+        <dex dex="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/build/intermediates/pre-dexed/arm/debug/imsdk_6a709ba57d21bf484141d2696255f61a09ba029f.jar" />
+    </item>
+    <item
+        jar="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/libs/wup-1.0.0-SNAPSHOT.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="dd8fa9304e376adaf936c3db097240d2efcb116f">
+        <dex dex="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/build/intermediates/pre-dexed/arm/debug/wup-1.0.0-SNAPSHOT_8639a66fb9739b0d541cde921fd7c3d7e4c4f50f.jar" />
+    </item>
+    <item
+        jar="/Users/mst/android_sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/build/intermediates/pre-dexed/arm/debug/support-v4-19.1.0_e79d5094a2dd808800188c0057286d02ab6afa8f.jar" />
+    </item>
+    <item
+        jar="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/libs/bugly_1.2.8_imsdk_release.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="b7cda4b61b114dd9684be56309411b5eb251b611">
+        <dex dex="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/build/intermediates/pre-dexed/arm/debug/bugly_1.2.8_imsdk_release_5de2070d82c6b1e8f41344e6fd0ae1b535edee62.jar" />
+    </item>
+    <item
+        jar="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/libs/libamm_sdk.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="47f4993168154fa73377d7470b9f6887d48a8023">
+        <dex dex="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/build/intermediates/pre-dexed/arm/debug/libamm_sdk_4c79b9ccf8e9dcfef7b934882d79c93206878d81.jar" />
+    </item>
+    <item
+        jar="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/libs/qalsdk.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="73813dfa880475cd77d83d362f43e5c17e444993">
+        <dex dex="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/build/intermediates/pre-dexed/arm/debug/qalsdk_d820d7e26a4b7c269a7064ffef56867f1ce7a175.jar" />
+    </item>
+    <item
+        jar="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/libs/open_sdk.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="fbc2fb9bce736c4b6d9146b932c4bf7a473f5786">
+        <dex dex="/Users/mst/Downloads/AV_Android_SDK1.7.0/samples/sample22/app/build/intermediates/pre-dexed/arm/debug/open_sdk_594396788865e6af2cc948c7db431ae1a078f8a0.jar" />
+    </item>
+
+</items>
